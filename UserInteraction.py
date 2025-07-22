@@ -1,5 +1,6 @@
-import Statistics
 from StatisticsManager import StatisticsManager
+
+
 class UserInteraction(StatisticsManager):
     def __init__(self):
         super().__init__()
@@ -18,6 +19,10 @@ class UserInteraction(StatisticsManager):
         while True:
             print("Available values for this feature:", list(self.a.values_of_column(feature_name)))
             feature_value = input("Enter feature value: ")
+            try:
+                feature_value = int(feature_value)
+            except:
+                pass
             if self.check_feature_value(feature_value,feature_name):
                 return feature_value
             print("Value not found in feature. Please try again.")
@@ -51,9 +56,10 @@ class UserInteraction(StatisticsManager):
             self.run_classification()
         print("Data entry is complete. Calculation is in progress.")
 
-        self.Percentage_display()
+        # self.Percentage_display()
         self.finalize_scores()
-        print(f"\nMost probable classification: {self.most_likely_label} (percentage: {self.highest_score} %)")
+        print(f"\nMost probable classification: {self.most_likely_label} (percentage: {self.highest_score} )")
         print("\nAll class scores:")
         for label in self.label_scores:
-            print(f"\t{label} : {self.label_scores[label]:} %")
+            print(f"\t{label} : {self.label_scores[label]:} ")
+        return self.most_likely_label

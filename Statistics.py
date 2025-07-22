@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 class NaiveBayesHelper:
     def __init__(self,dataframe,search):
@@ -28,22 +29,25 @@ class NaiveBayesHelper:
             except Exception as e:
                 print("Error loading dataset:", e,"not in data frame.")
                 return False
-    def _handle_zeros_in_table(self):
+    def handle_zeros_in_table(self):
         for value in self.values:
             if value == "__total__":
                 continue
             self.class_counts_table[value] = self.handle_zeros(self.class_counts_table[value])
 
-    def _normalize_counts_to_probabilities(self):
+    def normalize_counts_to_probabilities(self):
         for i in self.class_counts_table.keys():
             if i == "__total__":
+
                 continue
+            total_tabl = self.class_counts_table["__total__"]
             total = self.class_counts_table[i]["__total__"]
+            a = total/total_tabl
             for y in self.class_counts_table[i].keys():
                 if y == "__total__":
                     continue
                 for v in self.class_counts_table[i][y].keys():
-                    self.class_counts_table[i][y][v] = self.class_counts_table[i][y][v] / total
+                    self.class_counts_table[i][y][v] = (self.class_counts_table[i][y][v] / total) * a
 
 
     def build_class_count_table(self):
@@ -54,18 +58,19 @@ class NaiveBayesHelper:
             for value in self.values:
                 if column not in self.class_counts_table[value]:
                     self.class_counts_table[value][column] = {}
-                # עבור כל ערך ייחודי של העמודה השנייה
                 for val_in_col in self.dataframe[column].dropna().unique():
                     count = grouped_feature_counts.get((value, val_in_col), 0)
                     self.class_counts_table[value][column][val_in_col] = int(count)
     def values_of_column(self,column_name):
-        return self.dataframe[column_name].dropna().unique()
+        values = self.dataframe[column_name].dropna().unique()
+        cleaned = [int(v) if isinstance(v, (np.integer, int)) else v for v in values]
+        return cleaned
     def calculate_probabilities(self):
-        self.columns = [col for col in self.dataframe.columns if col not in ["id", self.search]]
+        self.columns = [col for col in self.dataframe.columns if col not in ["id","Index", self.search]]
         if not self.validate_search_column():
             return ""
         self.values = self.values_of_column(self.search)
         self.build_class_count_table()
-        self._handle_zeros_in_table()
-        self._normalize_counts_to_probabilities()
+        self.handle_zeros_in_table()
+        self.normalize_counts_to_probabilities()
         return self.class_counts_table,self.values,self.columns

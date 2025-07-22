@@ -1,5 +1,6 @@
 import Statistics
 from Reading_and_handling_data import ReadingAndHandingData
+# from Examination import Examination
 class StatisticsManager:
     def __init__(self):
         self.probability_table = {}
@@ -13,18 +14,26 @@ class StatisticsManager:
         self.a = None
     def read_csv(self,csv=None,search=None):
         if not csv:
-            csv ="data_for_NB_buys_computer.csv"
+            csv ="phishing.csv"
             if not search:
-                search ="Buy_Computer"
+                search ="class"
         if not search:
             print("")
             return ""
         try:
-            b = ReadingAndHandingData(csv, "id")
+            b = ReadingAndHandingData(csv, ["id","Index"])
             dataframe =b.gat_dataframe()
-            self.a = Statistics.NaiveBayesHelper(dataframe,search)
+            dataframe = dataframe.sample(frac=1, random_state=42).reset_index(drop=True)
+            split_index = int(0.7 * len(dataframe))
+            # יצירת דאטא פריים לאימון ולבדיקה
+            train_df = dataframe[:split_index]
+            test_df = dataframe[split_index:]
+            self.a = Statistics.NaiveBayesHelper(train_df,search)
             self.probability_table, self.class_labels,self.columns = self.a.calculate_probabilities()
-            print("Data loaded successfully.")
+            # test = Examination(test_df,search,self.columns)
+            # realness = test.gat_realness()
+            # print(f"Data loaded successfully. {realness}")
+            # print(self.probability_table)
             self.loaded = True
         except Exception as e:
             print("Error loading dataset:", e)
