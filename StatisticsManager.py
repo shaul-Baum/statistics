@@ -1,5 +1,5 @@
 import Statistics
-import Reading_and_handling_data
+from Reading_and_handling_data import ReadingAndHandingData
 class StatisticsManager:
     def __init__(self):
         self.probability_table = {}
@@ -20,7 +20,7 @@ class StatisticsManager:
             print("")
             return ""
         try:
-            b = Reading_and_handling_data.ReadingAndHandingData(csv, "id")
+            b = ReadingAndHandingData(csv, "id")
             dataframe =b.gat_dataframe()
             self.a = Statistics.NaiveBayesHelper(dataframe,search)
             self.probability_table, self.class_labels,self.columns = self.a.calculate_probabilities()
