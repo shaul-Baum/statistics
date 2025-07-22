@@ -11,11 +11,18 @@ class StatisticsManager:
         self.most_likely_label = ""
         self.columns =[]
         self.a = None
-    def read_csv(self):
+    def read_csv(self,csv=None,search=None):
+        if not csv:
+            csv ="data_for_NB_buys_computer.csv"
+            if not search:
+                search ="Buy_Computer"
+        if not search:
+            print("")
+            return ""
         try:
-            b = Reading_and_handling_data.ReadingAndHandingData("data_for_NB_buys_computer.csv","id")
+            b = Reading_and_handling_data.ReadingAndHandingData(csv, "id")
             dataframe =b.gat_dataframe()
-            self.a = Statistics.NaiveBayesHelper(dataframe,"Buy_Computer")
+            self.a = Statistics.NaiveBayesHelper(dataframe,search)
             self.probability_table, self.class_labels,self.columns = self.a.calculate_probabilities()
             print("Data loaded successfully.")
             self.loaded = True

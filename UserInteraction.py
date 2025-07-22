@@ -1,6 +1,8 @@
-class UserInteraction:
+import Statistics
+from StatisticsManager import StatisticsManager
+class UserInteraction(StatisticsManager):
     def __init__(self):
-        pass
+        super().__init__()
     def get_valid_feature_name(self):
         while True:
             print("Available features (columns):", self.columns)
@@ -17,11 +19,9 @@ class UserInteraction:
             print("Value not found in feature. Please try again.")
 
     def input_statistics(self):
-
         if not self.loaded:
             print("No data available. Please load the CSV file first.")
             return
-
         continue_input = "yes"
         while continue_input.lower() in ["yes", "y"]:
             feature_name = self.get_valid_feature_name()
