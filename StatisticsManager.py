@@ -57,6 +57,14 @@ class StatisticsManager:
         print(f"Model confidence level at this stage: {level_test}%")
         return level_test
     def update_statistics(self, feature_name, feature_value):
+        try:
+            feature_value = float(feature_value)
+        except:
+            pass
+        try:
+            feature_value = int(feature_value)
+        except:
+            pass
         for label in self.class_labels:
             if label not in self.label_scores:
                 self.label_scores[label] = 1

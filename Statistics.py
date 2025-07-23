@@ -40,14 +40,14 @@ class NaiveBayesHelper:
             if i == "__total__":
 
                 continue
-            total_tabl = self.class_counts_table["__total__"]
+            # total_tabl = self.class_counts_table["__total__"]
             total = self.class_counts_table[i]["__total__"]
-            a = total/total_tabl
+            # a = total/total_tabl
             for y in self.class_counts_table[i].keys():
                 if y == "__total__":
                     continue
                 for v in self.class_counts_table[i][y].keys():
-                    self.class_counts_table[i][y][v] = (self.class_counts_table[i][y][v] / total) * a
+                    self.class_counts_table[i][y][v] = self.class_counts_table[i][y][v] / total #*a
 
 
     def build_class_count_table(self):

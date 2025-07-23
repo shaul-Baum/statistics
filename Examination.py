@@ -22,6 +22,6 @@ class Examination:
         total = self.correct_predictions + self.incorrect_predictions
         if total == 0:
             return 0
-        return int((self.correct_predictions / total) * 100)
+        return int((self.correct_predictions *100 ) / total)
 
 

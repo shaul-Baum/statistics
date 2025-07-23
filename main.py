@@ -32,10 +32,16 @@ a =[
     'StatsReport', -1
 ]
 if __name__ == "__main__":
+    # ui = UserInteraction()
+    # ui.read_csv()
+    # if ui.evaluate_model(ui) > 65:
+    #     ui.input_statistics(a)
+    #     ui.print_percentage()
+    # else:
+    #     print("Sorry, our model was unable to produce good enough data based on the data you entered. You are welcome to try again at any time.")
     ui = UserInteraction()
     ui.read_csv()
-    if ui.evaluate_model(ui) > 65:
-        ui.input_statistics(a)
-        ui.print_percentage()
-    else:
-        print("Sorry, our model was unable to produce good enough data based on the data you entered. You are welcome to try again at any time.")
+    ui.evaluate_model(ui)
+    ui.update_statistics("Symbol@","1")
+    statistics, statistics_v = ui.finalize_scores()
+    print(f"yor statistic is: {statistics} {statistics_v}%")
