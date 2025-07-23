@@ -1,10 +1,5 @@
 from UserInteraction import UserInteraction
-
-if __name__ == "__main__":
-    ui = UserInteraction()
-    ui.read_csv()
-    ui.evaluate_model(ui)
-    a =[
+a =[
     'UsingIP', -1,
     'LongURL', -1,
     'ShortURL', 1,
@@ -36,7 +31,11 @@ if __name__ == "__main__":
     'LinksPointingToPage', 1,
     'StatsReport', -1
 ]
-
-
-    ui.input_statistics(a)
-    ui.print_percentage()
+if __name__ == "__main__":
+    ui = UserInteraction()
+    ui.read_csv()
+    if ui.evaluate_model(ui) > 65:
+        ui.input_statistics(a)
+        ui.print_percentage()
+    else:
+        print("Sorry, our model was unable to produce good enough data based on the data you entered. You are welcome to try again at any time.")

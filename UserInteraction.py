@@ -63,7 +63,8 @@ class UserInteraction(StatisticsManager):
         self.finalize_scores()
         return self.most_likely_label
     def print_percentage(self):
-        print(f"\nMost probable classification: {self.most_likely_label} (percentage: {self.highest_score} )")
-        print("\nAll class scores:")
+        print(f"\nMost probable classification: {self.most_likely_label} (probability score: {self.highest_score})")
+        print("\nProbability scores for all classes:")
         for label in self.label_scores:
-            print(f"\t{label} : {self.label_scores[label]:} ")
+            print(f"\t{label}: {self.label_scores[label]}")
+
