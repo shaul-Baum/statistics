@@ -3,6 +3,7 @@ from UserInteraction import UserInteraction
 if __name__ == "__main__":
     ui = UserInteraction()
     ui.read_csv()
+    ui.evaluate_model(ui)
     a =[
     'UsingIP', -1,
     'LongURL', -1,
@@ -38,3 +39,4 @@ if __name__ == "__main__":
 
 
     ui.input_statistics(a)
+    ui.print_percentage()
