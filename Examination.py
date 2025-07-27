@@ -1,38 +1,28 @@
+from Statistics_by_data import StatisticsByData
 import pandas as pd
-from UserInteraction import UserInteraction
 
 
 class Examination:
-    def __init__(self,data_test,search,columns):
-        self.ui = UserInteraction()
+    def __init__(self,probability_table,data_test,search,class_labels):
+        self.ui = StatisticsByData(probability_table,class_labels)
         self.data_test =data_test
         self.search =search
-        self.columns = columns
-    def examination(self,dataframe):
-        if self.ui.input_statistics(a)==1111111111111:
-            pass
+        self.correct_predictions = 0
+        self.incorrect_predictions = 0
+    def examination(self):
+        for i in range(len(self.data_test)):
+            row = self.data_test.iloc[i]
+            actual_label = row[self.search]
+            flattened = [item for col, val in row.items() if col != self.search for item in (col, val)]
+            if self.ui.input_statistics(flattened)==actual_label:
+                self.correct_predictions += 1
+            else:
+                self.incorrect_predictions += 1
+        return self.get_accuracy()
+    def get_accuracy(self):
+        total = self.correct_predictions + self.incorrect_predictions
+        if total == 0:
+            return 0
+        return int((self.correct_predictions *100 ) / total)
 
 
-
-
-
-
-
-#
-# # נניח שזה הדאטא פריים שלך
-# df = pd.read_csv("data.csv")
-#
-# # ערבוב רנדומלי של השורות
-# df_shuffled = df.sample(frac=1, random_state=42).reset_index(drop=True)
-#
-# # חישוב אינדקס החיתוך
-# split_index = int(0.7 * len(df_shuffled))
-#
-# # יצירת דאטא פריים לאימון ולבדיקה
-# train_df = df_shuffled[:split_index]
-# test_df = df_shuffled[split_index:]
-#
-# # בדיקה
-# print(f"Total rows: {len(df)}")
-# print(f"Train set: {len(train_df)}")
-# print(f"Test set: {len(test_df)}")

@@ -1,9 +1,6 @@
-from UserInteraction import UserInteraction
-
-if __name__ == "__main__":
-    ui = UserInteraction()
-    ui.read_csv()
-    a =[
+from StatisticsManager import StatisticsManager
+from Statistics_by_data import StatisticsByData
+a =[
     'UsingIP', -1,
     'LongURL', -1,
     'ShortURL', 1,
@@ -35,6 +32,12 @@ if __name__ == "__main__":
     'LinksPointingToPage', 1,
     'StatsReport', -1
 ]
-
-
-    ui.input_statistics(a)
+if __name__ == "__main__":
+    ui = StatisticsManager()
+    probability_table,class_labels = ui.read_csv()
+    if ui.evaluate_model(probability_table,class_labels) > 65:
+        e = StatisticsByData(probability_table,class_labels)
+        e.input_statistics(a)
+        e.print_percentage()
+    else:
+        print("Sorry, our model was unable to produce good enough data based on the data you entered. You are welcome to try again at any time.")
