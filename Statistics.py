@@ -73,4 +73,4 @@ class NaiveBayesHelper:
         self.build_class_count_table()
         self.handle_zeros_in_table()
         self.normalize_counts_to_probabilities()
-        return self.class_counts_table,self.values,self.columns
+        return self.class_counts_table,self.values

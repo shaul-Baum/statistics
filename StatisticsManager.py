@@ -10,8 +10,6 @@ class StatisticsManager:
         self.loaded = False
         self.search =""
         self.search_column = None
-        # self.columns =[]
-        # self.columns_z = []
         self.a = None
         self.data_test = None
     def read_csv(self,clean = ["id","Index"], csv=None, search=None):
@@ -51,7 +49,7 @@ class StatisticsManager:
 
     def _train_model(self, train_data):
         self.a = Statistics.NaiveBayesHelper(train_data, self.search)
-        self.probability_table, self.class_labels, self.columns = self.a.calculate_probabilities()
+        self.probability_table, self.class_labels= self.a.calculate_probabilities()
         # self.columns_z =[i for i in self.columns]
     def evaluate_model(self,probability_table,class_labels):
         test = Examination(probability_table,self.data_test, self.search,class_labels)
