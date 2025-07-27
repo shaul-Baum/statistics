@@ -1,4 +1,5 @@
-from UserInteraction import UserInteraction
+from StatisticsManager import StatisticsManager
+from Statistics_by_data import StatisticsByData
 a =[
     'UsingIP', -1,
     'LongURL', -1,
@@ -32,16 +33,11 @@ a =[
     'StatsReport', -1
 ]
 if __name__ == "__main__":
-    # ui = UserInteraction()
-    # ui.read_csv()
-    # if ui.evaluate_model(ui) > 65:
-    #     ui.input_statistics(a)
-    #     ui.print_percentage()
-    # else:
-    #     print("Sorry, our model was unable to produce good enough data based on the data you entered. You are welcome to try again at any time.")
-    ui = UserInteraction()
-    ui.read_csv()
-    ui.evaluate_model(ui)
-    ui.update_statistics("Symbol@","1")
-    statistics, statistics_v = ui.finalize_scores()
-    print(f"yor statistic is: {statistics} {statistics_v}%")
+    ui = StatisticsManager()
+    probability_table,class_labels = ui.read_csv()
+    if ui.evaluate_model(probability_table,class_labels) > 65:
+        e = StatisticsByData(probability_table,class_labels)
+        e.input_statistics(a)
+        e.print_percentage()
+    else:
+        print("Sorry, our model was unable to produce good enough data based on the data you entered. You are welcome to try again at any time.")

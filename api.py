@@ -16,7 +16,7 @@ async def root(colom):
     ui.evaluate_model(ui)
     ui.update_statistics(a[0],a[1])
     statistics,statistics_v =  ui.finalize_scores()
-    return f"yor statistic is: {statistics} {statistics_v}"
+    return {statistics : statistics_v}
 # @app.post("/")
 # async def greet(user:userInput):
 #     return

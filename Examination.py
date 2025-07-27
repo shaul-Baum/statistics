@@ -1,9 +1,10 @@
+from Statistics_by_data import StatisticsByData
 import pandas as pd
 
 
 class Examination:
-    def __init__(self,data_test,search,ui):
-        self.ui = ui
+    def __init__(self,probability_table,data_test,search,class_labels):
+        self.ui = StatisticsByData(probability_table,class_labels)
         self.data_test =data_test
         self.search =search
         self.correct_predictions = 0
