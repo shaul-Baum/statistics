@@ -34,9 +34,9 @@ a =[
 ]
 if __name__ == "__main__":
     ui = StatisticsManager()
-    probability_table,class_labels = ui.read_csv()
-    if ui.evaluate_model(probability_table,class_labels) > 65:
-        e = StatisticsByData(probability_table,class_labels)
+    probability_table = ui.read_csv()
+    if ui.evaluate_model(probability_table) > 65:
+        e = StatisticsByData(probability_table)
         e.input_statistics(a)
         e.print_percentage()
     else:

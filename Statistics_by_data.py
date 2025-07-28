@@ -1,21 +1,21 @@
 class StatisticsByData:
-    def __init__(self,dataStatistics,class_labels):
+    def __init__(self,dataStatistics):
         self.probability_table =dataStatistics
         self.label_scores = {}
         self.most_likely_label = ""
-        self.class_labels =class_labels
+        self.class_labels =[i for i in self.probability_table if i != "__total__"]
         self.highest_score = 0
     def check_feature_value(self,feature_value,feature_name):
         return feature_value in self.probability_table[self.class_labels[0]][feature_name]
     def update_statistics(self, feature_name, feature_value):
-        try:
-            feature_value = float(feature_value)
-        except:
-            pass
-        try:
-            feature_value = int(feature_value)
-        except:
-            pass
+        # try:
+        #     feature_value = float(feature_value)
+        # except:
+        #     pass
+        # try:
+        #     feature_value = int(feature_value)
+        # except:
+        #     pass
         for label in self.class_labels:
             if label not in self.label_scores:
                 self.label_scores[label] = 1
