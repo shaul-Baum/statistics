@@ -8,18 +8,24 @@ class StatisticsByData:
     def check_feature_value(self,feature_value,feature_name):
         return feature_value in self.probability_table[self.class_labels[0]][feature_name]
     def update_statistics(self, feature_name, feature_value):
-        # try:
-        #     feature_value = float(feature_value)
-        # except:
-        #     pass
-        # try:
-        #     feature_value = int(feature_value)
-        # except:
-        #     pass
-        for label in self.class_labels:
-            if label not in self.label_scores:
-                self.label_scores[label] = 1
-            self.label_scores[label] *= self.probability_table[label][feature_name][feature_value]
+        try:
+            for label in self.class_labels:
+                if label not in self.label_scores:
+                    self.label_scores[label] = 1
+                self.label_scores[label] *= self.probability_table[label][feature_name][feature_value]
+        except:
+            try:
+                feature_value = float(feature_value)
+            except:
+                pass
+            try:
+                feature_value = int(feature_value)
+            except:
+                pass
+            for label in self.class_labels:
+                if label not in self.label_scores:
+                    self.label_scores[label] = 1
+                self.label_scores[label] *= self.probability_table[label][feature_name][feature_value]
     def get_valid_feature_name(self):
         while True:
             print("Available features (columns):", self.columns_z)
