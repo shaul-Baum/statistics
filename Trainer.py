@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
+from Logger import Logger
 
-class NaiveBayesHelper:
+class Trainer:
     def __init__(self,dataframe,search):
         self.class_counts_table = {}
         self.counts = pd.Series(dtype=int)
@@ -9,6 +10,7 @@ class NaiveBayesHelper:
         self.columns = []
         self.search = search
         self.dataframe = dataframe
+        self.logger = Logger()
     def handle_zeros(self,NumberTimes):
         for i in NumberTimes.keys():
             if i == "__total__":
@@ -27,6 +29,7 @@ class NaiveBayesHelper:
                 self.counts = self.dataframe[self.search].value_counts()
                 return True
             except Exception as e:
+                self.logger.log(f"Error loading dataset: {e}")
                 print("Error loading dataset:", e,"not in data frame.")
                 return False
     def handle_zeros_in_table(self):
@@ -73,4 +76,4 @@ class NaiveBayesHelper:
         self.build_class_count_table()
         self.handle_zeros_in_table()
         self.normalize_counts_to_probabilities()
-        return self.class_counts_table,self.values,self.columns
+        return self.class_counts_table,self.values

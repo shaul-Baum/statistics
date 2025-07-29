@@ -1,7 +1,8 @@
 import pandas as pd
+from Logger import Logger
 class Cleanr:
     def __init__(self,dataframe,clean=None):
-
+        self.logger =Logger()
         self.dataframe = dataframe
         self.clean =clean
         self.dataframe = self.clean_table()
@@ -20,6 +21,7 @@ class Cleanr:
                 self.dataframe.drop(self.clean, axis=1, inplace=True)
             except:
                 pass
+        self.logger.log(f"data is clean")
 
         return self.dataframe
     def gat_dataframe(self):

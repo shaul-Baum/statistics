@@ -1,10 +1,10 @@
-from Statistics_by_data import StatisticsByData
+from Validator import Validator
 import pandas as pd
 
 
 class Examination:
-    def __init__(self,probability_table,data_test,search,class_labels):
-        self.ui = StatisticsByData(probability_table,class_labels)
+    def __init__(self,probability_table,data_test,search):
+        self.ui = Validator(probability_table)
         self.data_test =data_test
         self.search =search
         self.correct_predictions = 0

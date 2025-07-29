@@ -1,19 +1,33 @@
-import Statistics
-from ReadData import ReadData
+from Trainer import Trainer
+from Logger import Logger
+from Loader import Loader
 from Cleanr import Cleanr
 from Examination import Examination
-
-class StatisticsManager:
+import numpy as np
+class TrainerManager:
     def __init__(self):
         self.probability_table = {}
         self.class_labels = []
         self.loaded = False
         self.search =""
         self.search_column = None
-        # self.columns =[]
-        # self.columns_z = []
         self.a = None
         self.data_test = None
+        self.logger =Logger()
+    def convert_keys(self,obj):
+        if isinstance(obj, dict):
+            new_dict = {}
+            for key, value in obj.items():
+                # המרה של המפתח ל־int אם הוא np.int64
+                if isinstance(key, np.integer):
+                    key = int(key)
+                new_dict[key] = self.convert_keys(value)
+            return new_dict
+        elif isinstance(obj, list):
+            return [self.convert_keys(item) for item in obj]
+        else:
+            return obj
+
     def read_csv(self,clean = ["id","Index"], csv=None, search=None):
         self.search = search
         try:
@@ -25,8 +39,10 @@ class StatisticsManager:
             self.loaded = True
 
         except Exception as e:
+            self.logger.log(f"\tError loading dataset: {e}")
             print("Error loading dataset:", e)
-        return self.probability_table, self.class_labels
+        self.probability_table = self.convert_keys(self.probability_table)
+        return self.probability_table
 
     def _load_data(self, csv):
         if not csv:
@@ -36,7 +52,7 @@ class StatisticsManager:
         if not self.search:
             print("")
             return "", ""
-        b = ReadData(csv)
+        b = Loader(csv)
         dataframe = b.gat_dataframe()
         return dataframe
     def _cleanr(self,dataframe,clean):
@@ -50,12 +66,13 @@ class StatisticsManager:
         return train_data
 
     def _train_model(self, train_data):
-        self.a = Statistics.NaiveBayesHelper(train_data, self.search)
-        self.probability_table, self.class_labels, self.columns = self.a.calculate_probabilities()
-        # self.columns_z =[i for i in self.columns]
-    def evaluate_model(self,probability_table,class_labels):
-        test = Examination(probability_table,self.data_test, self.search,class_labels)
+        self.a = Trainer(train_data, self.search)
+        self.probability_table, self.class_labels= self.a.calculate_probabilities()
+    def evaluate_model(self,probability_table):
+        test = Examination(probability_table,self.data_test, self.search)
         level_test = test.examination()
+        self.logger.log("Data loaded successfully.")
+        self.logger.log(f"Model confidence level at this stage: {level_test}%")
         print("Data loaded successfully.")
         print(f"Model confidence level at this stage: {level_test}%")
         return level_test
