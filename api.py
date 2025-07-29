@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from  pydantic import BaseModel
-from StatisticsManager import StatisticsManager
+from TrainerManager import TrainerManager
 from Statistics_by_data import StatisticsByData
 
 app = FastAPI()
@@ -10,7 +10,7 @@ class userInput(BaseModel):
     age:int
 @app.get("/")
 async def root():
-    ui = StatisticsManager()
+    ui = TrainerManager()
     probability_table = ui.read_csv()
     ui.evaluate_model(probability_table)
     return probability_table

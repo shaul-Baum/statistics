@@ -1,9 +1,10 @@
-import Statistics
-from ReadData import ReadData
+from Trainer import Trainer
+from Logger import Logger
+from Loader import Loader
 from Cleanr import Cleanr
 from Examination import Examination
 import numpy as np
-class StatisticsManager:
+class TrainerManager:
     def __init__(self):
         self.probability_table = {}
         self.class_labels = []
@@ -12,6 +13,7 @@ class StatisticsManager:
         self.search_column = None
         self.a = None
         self.data_test = None
+        self.logger =Logger()
     def convert_keys(self,obj):
         if isinstance(obj, dict):
             new_dict = {}
@@ -37,6 +39,7 @@ class StatisticsManager:
             self.loaded = True
 
         except Exception as e:
+            self.logger.log(f"\tError loading dataset: {e}")
             print("Error loading dataset:", e)
         self.probability_table = self.convert_keys(self.probability_table)
         return self.probability_table
@@ -49,7 +52,7 @@ class StatisticsManager:
         if not self.search:
             print("")
             return "", ""
-        b = ReadData(csv)
+        b = Loader(csv)
         dataframe = b.gat_dataframe()
         return dataframe
     def _cleanr(self,dataframe,clean):
@@ -63,11 +66,13 @@ class StatisticsManager:
         return train_data
 
     def _train_model(self, train_data):
-        self.a = Statistics.NaiveBayesHelper(train_data, self.search)
+        self.a = Trainer(train_data, self.search)
         self.probability_table, self.class_labels= self.a.calculate_probabilities()
     def evaluate_model(self,probability_table):
         test = Examination(probability_table,self.data_test, self.search)
         level_test = test.examination()
+        self.logger.log("Data loaded successfully.")
+        self.logger.log(f"Model confidence level at this stage: {level_test}%")
         print("Data loaded successfully.")
         print(f"Model confidence level at this stage: {level_test}%")
         return level_test

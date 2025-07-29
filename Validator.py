@@ -1,4 +1,4 @@
-class StatisticsByData:
+class Validator:
     def __init__(self,dataStatistics):
         self.probability_table =dataStatistics
         self.label_scores = {}
