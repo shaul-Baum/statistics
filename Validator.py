@@ -1,4 +1,6 @@
 from Logger import Logger
+import inspect
+import os
 class Validator:
     def __init__(self,dataStatistics):
         self.logger = Logger()
@@ -62,18 +64,19 @@ class Validator:
                 self.succeeded += 1
             else:
                 self.not_succeeded += 1
-
             try:
                 self.update_statistics(feature_name, feature_value)
             except Exception as e:
                 print(f"Failed to update statistics for feature '{feature_name}' with value '{feature_value}'")
-                print(f"Error: {e}")
                 self.logger.log(f"Error processing feature '{feature_name}': {e}","WARNING")
         if self.succeeded > self.not_succeeded:
+            caller_file = os.path.basename(inspect.stack()[2].filename) == "main.py"
+            if caller_file:
+                self.logger.log(f"Validation succeeded: {self.succeeded} features succeeded, {self.not_succeeded} failed.")
             return True
         else:
             print("More failed feature inputs than successful ones.")
-            self.logger.log("Validation failed: More failed inputs than succeeded.","ERROR")
+            self.logger.log(f"Validation failed: {self.not_succeeded} features failed, {self.succeeded} succeeded.","ERROR")
             return False
     def finalize_scores(self):
         self.most_likely_label = max(self.label_scores, key=self.label_scores.get)
