@@ -42,24 +42,25 @@ b = [
 # csv = "data_for_NB_buys_computer.csv",search = "Buy_Computer"
 if __name__ == "__main__":
     ui = TrainerManager()
-    t = False
+    Flag,loaded = True,False
     choice = None
     while choice != "exit":
-        print("To replace the csv press 1"
-                "\nTo see the accuracy percentage press 2"
-                "\nTo ask questions press 3"
-                "\nTo exit press exit")
-        choice = input("Please enter your choice: ")
+        if Flag:
+            print("\tTo replace the csv press 1"
+                    "\n\tTo see the accuracy percentage press 2"
+                    "\n\tTo ask questions press 3"
+                    "\n\tTo exit press exit")
+            choice = input("Please enter your choice: ")
         if choice == "1":
             ui._input_csv()
-        if not t or choice == "1" or not loaded:
+        if choice == "1" or not loaded:
             probability_table,loaded = ui.read_csv()
-            t = True
+            Flag = loaded
             if loaded:
                 level_test = ui.evaluate_model(probability_table)
         if loaded:
             if choice == "2":
-                print(f"Model confidence level at this stage: {level_test}%")
+                print(f"\nModel confidence level at this stage: {level_test}%\n")
             if level_test > 55:
                 if choice == "3":
                     e = Validator(probability_table)

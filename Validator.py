@@ -97,3 +97,4 @@ class Validator:
         print("\nProbability scores for all classes:")
         for label in self.label_scores:
             print(f"\t{label}: {self.label_scores[label]}")
+        print()

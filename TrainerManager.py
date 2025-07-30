@@ -41,18 +41,19 @@ class TrainerManager:
             dataframe = dataframe.sample(frac=1, random_state=42).reset_index(drop=True)
             train_data = self._split_data(dataframe)
             self._train_model(train_data)
+            self.probability_table = self.convert_keys(self.probability_table)
             self.loaded = True
+            self.logger.log("Data loaded successfully.")
+            print("Data loaded successfully.")
 
         except Exception as e:
             self.logger.log(f"Error loading dataset: {e}","ERROR")
             print("Error loading dataset:", e)
-        self.probability_table = self.convert_keys(self.probability_table)
-        self.logger.log("Data loaded successfully.")
-        print("Data loaded successfully.")
+            self.loaded =False
         return self.probability_table,self.loaded
     def _input_csv(self):
         self.csv = input("input csv: ")
-        self.search = input("input colome to search: ")
+        self.search = input("input column name to search: ")
     def _load_data(self, csv):
         if not csv:
             csv = "phishing.csv"
