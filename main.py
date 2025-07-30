@@ -42,7 +42,7 @@ b = [
 # csv = "data_for_NB_buys_computer.csv",search = "Buy_Computer"
 if __name__ == "__main__":
     ui = TrainerManager()
-    Flag,loaded = True,False
+    Flag,loaded,original_csv= True,False,True
     choice = None
     while choice != "exit":
         if Flag:
@@ -52,8 +52,10 @@ if __name__ == "__main__":
                     "\n\tTo exit press exit")
             choice = input("Please enter your choice: ")
         if choice == "1":
+            original_csv =False
+            loaded =False
             ui._input_csv()
-        if choice == "1" or not loaded:
+        if not loaded:
             probability_table,loaded = ui.read_csv()
             Flag = loaded
             if loaded:
@@ -64,12 +66,13 @@ if __name__ == "__main__":
             if level_test > 55:
                 if choice == "3":
                     e = Validator(probability_table)
-                    print("To replace data press 1 To use default press 0")
-                    choice_2 = input("Please enter your choice: ")
-                    if choice_2 != "1":
-                        r = a
-                    else:
-                        r = None
+                    choice_2 = "0"
+                    r = None
+                    if original_csv:
+                        print("To replace data press 1 To use default press 0")
+                        choice_2 = input("Please enter your choice: ")
+                        if choice_2 != "1":
+                            r = a
                     e.input_statistics(r)
                     e.print_percentage()
             else:

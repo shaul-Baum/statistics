@@ -36,17 +36,13 @@ class Validator:
     def get_valid_feature_name(self):
         while True:
             feature_name = input("Enter feature name (column): ")
-            if feature_name is not None:
+            if feature_name != "":
                 return feature_name
             print("Feature not found. Please try again.")
     def get_valid_feature_value(self):
         while True:
             feature_value = input("Enter feature value: ")
-            try:
-                feature_value = int(feature_value)
-            except:
-                pass
-            if feature_value is not None:
+            if feature_value != "":
                 return feature_value
             print("Value not found in feature. Please try again.")
     def run_classification(self):
