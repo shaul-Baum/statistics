@@ -13,6 +13,7 @@ class TrainerManager:
         self.search_column = None
         self.a = None
         self.data_test = None
+        self.csv =None
         self.logger =Logger()
     def convert_keys(self,obj):
         if isinstance(obj, dict):
@@ -28,10 +29,14 @@ class TrainerManager:
         else:
             return obj
 
-    def read_csv(self,clean = ["id","Index"], csv=None, search=None):
-        self.search = search
+    def read_csv(self, csv=None, search=None,clean = ["id","Index"]):
+        if csv and search:
+            self.csv = csv
+            self.search = search
+        # if not self.csv:
+        #     self._input_csv()
         try:
-            dataframe= self._load_data(csv)
+            dataframe= self._load_data(self.csv)
             dataframe = self._cleanr(dataframe,clean)
             dataframe = dataframe.sample(frac=1, random_state=42).reset_index(drop=True)
             train_data = self._split_data(dataframe)
@@ -42,8 +47,12 @@ class TrainerManager:
             self.logger.log(f"Error loading dataset: {e}","ERROR")
             print("Error loading dataset:", e)
         self.probability_table = self.convert_keys(self.probability_table)
-        return self.probability_table
-
+        self.logger.log("Data loaded successfully.")
+        print("Data loaded successfully.")
+        return self.probability_table,self.loaded
+    def _input_csv(self):
+        self.csv = input("input csv: ")
+        self.search = input("input colome to search: ")
     def _load_data(self, csv):
         if not csv:
             csv = "phishing.csv"
@@ -71,10 +80,10 @@ class TrainerManager:
     def evaluate_model(self,probability_table):
         test = Examination(probability_table,self.data_test, self.search)
         level_test = test.examination()
-        self.logger.log("Data loaded successfully.")
+
         self.logger.log(f"Model confidence level at this stage: {level_test}%","METRIC")
-        print("Data loaded successfully.")
-        print(f"Model confidence level at this stage: {level_test}%")
+
+        # print(f"Model confidence level at this stage: {level_test}%")
         return level_test
 
 

@@ -54,8 +54,11 @@ class Validator:
         while continue_input.lower() in ["yes", "y"]:
             feature_name = self.get_valid_feature_name()
             feature_value = self.get_valid_feature_value()
-            self.update_statistics(feature_name, feature_value)
-            continue_input = input("Do you want to enter another feature? (yes/no): ")
+            try:
+                self.update_statistics(feature_name, feature_value)
+                continue_input = input("Do you want to enter another feature? (yes/no): ")
+            except:
+                print(f"{feature_name} or {feature_value} not found.")
     def process_feature_pairs(self,feature_input_list):
         for i in range(0,len(feature_input_list),2):
             feature_name =feature_input_list[i]
