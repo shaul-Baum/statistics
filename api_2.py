@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from  pydantic import BaseModel
-from Statistics_by_data import StatisticsByData
+from Validator import Validator
 import requests
 import json
 
@@ -15,7 +15,7 @@ async def root(colom_value):
     response = requests.get("http://api:8000")
     if response.status_code == 200:
         probability_table =response.json()
-        e = StatisticsByData(probability_table)
+        e = Validator(probability_table)
         if len(a)>=2:
             e.update_statistics(a[0],a[1])
             statistics,statistics_v =  e.finalize_scores()
