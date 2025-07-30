@@ -39,7 +39,7 @@ class TrainerManager:
             self.loaded = True
 
         except Exception as e:
-            self.logger.log(f"\tError loading dataset: {e}")
+            self.logger.log(f"Error loading dataset: {e}","ERROR")
             print("Error loading dataset:", e)
         self.probability_table = self.convert_keys(self.probability_table)
         return self.probability_table
@@ -72,7 +72,7 @@ class TrainerManager:
         test = Examination(probability_table,self.data_test, self.search)
         level_test = test.examination()
         self.logger.log("Data loaded successfully.")
-        self.logger.log(f"Model confidence level at this stage: {level_test}%")
+        self.logger.log(f"Model confidence level at this stage: {level_test}%","METRIC")
         print("Data loaded successfully.")
         print(f"Model confidence level at this stage: {level_test}%")
         return level_test

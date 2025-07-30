@@ -20,7 +20,7 @@ a =[
     'InfoEmail', -1,
     'AbnormalURL', 1,
     'WebsiteForwarding', 1,
-    'StatusBarCust', -1,
+    'StatuBarCust', -1,
     'DisableRightClick', 1,
     'UsingPopupWindow', -1,
     'IframeRedirection', 1,
